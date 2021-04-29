@@ -1,8 +1,9 @@
 # 체인플릭스 변환 서버
 
-## 설치할 폴더 만들기
+## 설치할 파일 다운로드
 ```sh
-$ mkdir ~/chainflix
+$ cd ~
+$ git clone https://github.com/jampick-kr/chainflix-converter-update chainflix
 ```
 
 ## 설치 폴더로 경로이동
