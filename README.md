@@ -1,6 +1,6 @@
 # chainflix-convert-server
 
-[한국어로 보기](https://github.com/jampick-kr/chainflix-converter-update/blob/main/help/README_KR.md)
+[한국어로 보기](https://github.com/jampick-kr/chainflix-converter-update/blob/master/help/README_KR.md)
 
 ## take install files
 ```sh
