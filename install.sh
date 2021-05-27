@@ -58,8 +58,8 @@ bash nvidia-patch/patch-fbc.sh
 
 sessionId=""
 siteName=""
-# maxConvertCount=""
-# maxThumbnailCount=""
+maxConvertCount="5"
+maxThumbnailCount="1"
 # load convert server information
 
 # info auto load
@@ -74,7 +74,7 @@ fi
 
 while :
 do
-  if [[ $sessionId != "" && $maxConvertCount != "" && $maxThumbnailCount != "" ]] then
+  if [[ $sessionId != "" && $maxConvertCount != "" && $maxThumbnailCount != "" ]]; then
     break
   fi
   read -r -p"Please insert convert session id: " sessionId
@@ -85,9 +85,9 @@ cat > config.json << EOF
 {
   "key": "${sessionId}",
   "max": 2,
-  "maxConvert": 5,
+  "maxConvert": ${maxConvertCount},
   "maxFrames": 60,
-  "maxThumbnail": 1
+  "maxThumbnail": ${maxThumbnailCount}
 }
 EOF
 
@@ -95,7 +95,7 @@ chown $USER:$USER config.json
 
 while :
 do
-  if [[ $siteName != "" ]] then
+  if [[ $siteName != "" ]]; then
     break
   fi
   read -r -p"Please insert convert server name: " siteName
