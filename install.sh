@@ -81,7 +81,7 @@ do
   #read -r -p"Please insert max convert count: " maxConvertCount
   #read -r -p"Please insert max thumbnail count: " maxThumbnailCount
 done
-cat > config.json << EOF
+sudo -u $USER cat > config.json << EOF
 {
   "key": "${sessionId}",
   "max": 2,
@@ -90,8 +90,6 @@ cat > config.json << EOF
   "maxThumbnail": ${maxThumbnailCount}
 }
 EOF
-
-chown $USER:$USER config.json
 
 while :
 do
@@ -134,8 +132,8 @@ EOF
 
 dpkg-reconfigure -plow unattended-upgrades
 
-wget https://chainflix-common.s3.ap-northeast-2.amazonaws.com/converterTestVideo/testVideos.tar.gz testVideos.tar.gz
-tar xzvf chainflix_convert.tar.gz
+sudo -u $USER wget https://chainflix-common.s3.ap-northeast-2.amazonaws.com/converterTestVideo/testVideos.tar.gz testVideos.tar.gz
+sudo -u $USER tar xzvf chainflix_convert.tar.gz
 
 ## 변환서버 런처 설치 및 실행
 echo "Default install success"
