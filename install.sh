@@ -48,7 +48,7 @@ apt-get install -y git python3 python3-pip python3-setuptools python3-wheel \
   ninja-build libtool build-essential libcurl4-gnutls-dev libxml2-dev libssl-dev \
   automake autoconf libass-dev pkg-config texinfo zlib1g-dev cmake mercurial \
   libbz2-dev rtmpdump librtmp-dev opencl-headers ocl-icd-* screen curl \
-  cuda-drivers-460 apache2 certbot python3-certbot-apache
+  cuda-drivers-$(echo $(nvidia-smi --query-gpu=driver_version --format=csv,noheader | head -1 | cut -d. -f1)) apache2 certbot python3-certbot-apache
 apt -y install nvidia-cuda-toolkit
 pip3 install meson
 ## nvidia-patch
