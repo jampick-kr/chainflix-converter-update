@@ -41,7 +41,7 @@ distribution=$(. /etc/os-release;echo $ID$VERSION_ID | sed -e 's/\.//g')
 wget https://developer.download.nvidia.com/compute/cuda/repos/$distribution/x86_64/cuda-$distribution.pin
 mv cuda-$distribution.pin /etc/apt/preferences.d/cuda-repository-pin-600
 apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/$distribution/x86_64/7fa2af80.pub
-add-apt-repository "deb http://developer.download.nvidia.com/compute/cuda/repos/$distribution/x86_64 /"
+add-apt-repository "deb https://developer.download.nvidia.com/compute/cuda/repos/$distribution/x86_64 /"
 apt-get update
 apt-get upgrade
 apt-get install -y git python3 python3-pip python3-setuptools python3-wheel \
