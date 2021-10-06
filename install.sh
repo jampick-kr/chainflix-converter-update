@@ -48,8 +48,8 @@ apt-get install -y git python3 python3-pip python3-setuptools python3-wheel \
   ninja-build libtool build-essential libcurl4-gnutls-dev libxml2-dev libssl-dev \
   automake autoconf libass-dev pkg-config texinfo zlib1g-dev cmake mercurial \
   libbz2-dev rtmpdump librtmp-dev opencl-headers ocl-icd-* screen curl \
-  cuda-drivers-$(echo $(nvidia-smi --query-gpu=driver_version --format=csv,noheader | head -1 | cut -d. -f1)) apache2 certbot python3-certbot-apache
-apt -y install nvidia-cuda-toolkit
+  cuda-drivers-$(echo $(nvidia-smi --query-gpu=driver_version --format=csv,noheader | head -1 | cut -d. -f1))
+apt install -y nvidia-cuda-toolkit
 pip3 install meson
 ## nvidia-patch
 git clone https://github.com/keylase/nvidia-patch nvidia-patch
@@ -57,7 +57,6 @@ bash nvidia-patch/patch.sh
 bash nvidia-patch/patch-fbc.sh
 
 sessionId=""
-siteName=""
 maxConvertCount="5"
 maxThumbnailCount="1"
 # load convert server information
@@ -67,8 +66,6 @@ resultData=$(curl -s 'https://api.chainflix.net/api/converter/converter_install_
 resultCode=$(python3 -c "import sys, json; print(${resultData}['result_code'])")
 if [[ $resultCode == "1" ]]; then
   sessionId=$(python3 -c "import sys, json; print(${resultData}['body']['converter_key'])")
-  siteName=$(python3 -c "import sys, json; print(${resultData}['body']['converter_api_url'])")
-  siteName="${siteName/https\:\/\//}"
 fi
 
 
@@ -91,36 +88,7 @@ sudo -u $USER cat > config.json << EOF
 }
 EOF
 
-while :
-do
-  if [[ $siteName != "" ]]; then
-    break
-  fi
-  read -r -p"Please insert convert server name: " siteName
-done
-
 ## 서버 설정
-a2enmod headers
-a2enmod proxy
-a2enmod proxy_http
-a2enmod rewrite
-service apache2 restart
-
-cat > /etc/apache2/sites-available/000-default.conf << EOF
-<VirtualHost *:80>
-        ServerName ${siteName}
-        ServerAdmin webmaster@localhost
-        ProxyPreserveHost On
-        ProxyPass / http://127.0.0.1:8083/
-        ProxyPassReverse / http://127.0.0.1:8083/
-RewriteEngine on
-RewriteCond %{SERVER_NAME} =${siteName}
-RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
-</VirtualHost>
-EOF
-
-certbot --apache --register-unsafely-without-email --redirect --agree-tos -d ${siteName}
-
 echo "Please input enter key till came back"
 sleep 5s
 cat > /etc/apt/apt.conf.d/20auto-upgrades << EOF
