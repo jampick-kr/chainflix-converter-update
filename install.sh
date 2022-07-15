@@ -38,17 +38,37 @@ ufw allow 443/tcp
 add-apt-repository -y ppa:graphics-drivers/ppa
 apt-get install linux-headers-$(uname -r)
 distribution=$(. /etc/os-release;echo $ID$VERSION_ID | sed -e 's/\.//g')
+nvidiaDriver=$(nvidia-smi --query-gpu=driver_version --format=csv,noheader | head -1 | cut -d. -f1)
+if [[ $distribution == "ubuntu2004" ]]; then
+  if [[ $nvidiaDriver == "470" ]]; then
+  else
+    echo "nvidia-driver is not support. please install nvidia-driver-470"
+    exit 100
+  fi
+elif [[ $distribution == "ubuntu2204" ]]; then
+  if [[ $nvidiaDriver == "515" ]]; then
+  else
+    echo "nvidia-driver is not support. please install nvidia-driver-515"
+    exit 100
+  fi
+fi
+
 wget https://developer.download.nvidia.com/compute/cuda/repos/$distribution/x86_64/cuda-$distribution.pin
 mv cuda-$distribution.pin /etc/apt/preferences.d/cuda-repository-pin-600
+if [[ $distribution == "ubuntu2004" ]]; then
 apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/$distribution/x86_64/7fa2af80.pub
 add-apt-repository "deb https://developer.download.nvidia.com/compute/cuda/repos/$distribution/x86_64 /"
+elif [[ $distribution == "ubuntu2204" ]]; then
+apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/$distribution/x86_64/3bf863cc.pub
+add-apt-repository "deb https://developer.download.nvidia.com/compute/cuda/repos/$distribution/x86_64 /"
+fi
 apt-get update
 apt-get upgrade
 apt-get install -y git python3 python3-pip python3-setuptools python3-wheel \
   ninja-build libtool build-essential libcurl4-gnutls-dev libxml2-dev libssl-dev \
   automake autoconf libass-dev pkg-config texinfo zlib1g-dev cmake mercurial \
   libbz2-dev rtmpdump librtmp-dev opencl-headers ocl-icd-* screen curl \
-  cuda-drivers-$(echo $(nvidia-smi --query-gpu=driver_version --format=csv,noheader | head -1 | cut -d. -f1))
+  cuda-drivers-$nvidiaDriver
 apt install -y nvidia-cuda-toolkit
 pip3 install meson
 ## nvidia-patch
