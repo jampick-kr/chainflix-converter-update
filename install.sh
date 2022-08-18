@@ -27,7 +27,7 @@ if [[ $inputSource == "" ]]; then
 fi
 
 if [[ $inputSource == "Y" || $inputSource == "y" ]]; then
-  ufw allow from 211.219.51.217 to any port 22 proto tcp
+  ufw allow from 61.82.99.195 to any port 22 proto tcp
 fi
 
 ## 방화벽 허용 - 통신
@@ -55,6 +55,7 @@ wget https://developer.download.nvidia.com/compute/cuda/repos/$distribution/x86_
 mv cuda-$distribution.pin /etc/apt/preferences.d/cuda-repository-pin-600
 if [[ $distribution == "ubuntu2004" ]]; then
 apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/$distribution/x86_64/7fa2af80.pub
+apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/$distribution/x86_64/3bf863cc.pub
 add-apt-repository "deb https://developer.download.nvidia.com/compute/cuda/repos/$distribution/x86_64 /"
 elif [[ $distribution == "ubuntu2204" ]]; then
 apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/$distribution/x86_64/3bf863cc.pub
