@@ -40,14 +40,12 @@ apt-get install linux-headers-$(uname -r)
 distribution=$(. /etc/os-release;echo $ID$VERSION_ID | sed -e 's/\.//g')
 nvidiaDriver=$(nvidia-smi --query-gpu=driver_version --format=csv,noheader | head -1 | cut -d. -f1)
 if [[ $distribution == "ubuntu2004" ]]; then
-  if [[ $nvidiaDriver == "470" ]]; then
-  else
+  if [[ $nvidiaDriver != "470" ]]; then
     echo "nvidia-driver is not support. please install nvidia-driver-470"
     exit 100
   fi
 elif [[ $distribution == "ubuntu2204" ]]; then
-  if [[ $nvidiaDriver == "515" ]]; then
-  else
+  if [[ $nvidiaDriver != "515" ]]; then
     echo "nvidia-driver is not support. please install nvidia-driver-515"
     exit 100
   fi
